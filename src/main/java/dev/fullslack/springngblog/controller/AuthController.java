@@ -1,5 +1,6 @@
 package dev.fullslack.springngblog.controller;
 
+import dev.fullslack.springngblog.dto.LoginRequest;
 import dev.fullslack.springngblog.dto.RegisterRequest;
 import dev.fullslack.springngblog.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,5 +22,10 @@ public class AuthController {
     public ResponseEntity signup(@RequestBody RegisterRequest registerRequest) {
         authService.signup(registerRequest);
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @PostMapping("/login")
+    public String login(@RequestBody LoginRequest loginRequest) {
+        return authService.login(loginRequest);
     }
 }
