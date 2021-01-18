@@ -1,5 +1,7 @@
 package dev.fullslack.springngblog.security;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -26,5 +28,21 @@ public class JwtProvider {
                 .setSubject(principal.getUsername())
                 .signWith(key)
                 .compact();
+    }
+
+    public boolean validateToken(String jwt) {
+        boolean value;
+        try {
+            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJwt(jwt);
+            value = true;
+        } catch (JwtException e) {
+            value = false;
+        }
+        return value;
+    }
+
+    public String getUsernameFromJwt(String token) {
+        Claims claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJwt(token).getBody();
+        return claims.getSubject();
     }
 }
